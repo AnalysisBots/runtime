@@ -2,7 +2,10 @@ import os
 import sys
 
 from github3 import GitHub
+from github3 import login
+import pygit2
 import git_helpers
+import spell_checker
 
 # TODO refactor
 # This file currently contains the scripts for searching and cloning GitHub 
@@ -22,22 +25,33 @@ import git_helpers
 # Search API  |  30/min            |  10 per minute         |  ???  (large)
 # Other       |  5000/hr           |  60 per hour           |  ???  (large)
 class AnalysisBot:
-    def __init__(self, github=None):
-        self.github = github
+    def __init__(self, username, password):
+        self.github = login(username, password)
         self.dir_manager = git_helpers.DirManager()
-        self.credentials_manager = git_helpers.CredentialsManager(None)
+        self.credentials = pygit2.UserPass(username, password)
 
+
+    # search and clone 10 repos of a specified GitHub user into the directory from 
     def cloneReposFrom(self, username, number=-1):
         for repo in GitHub().repositories_by(username, number):
-            git_helpers.GitHelper(repo.clone_url, self.dir_manager, self.credentials_manager)
+            git_helpers.GitHelper(repo.clone_url, self.dir_manager, self.credentials)
             #os.system("git clone {}".format(repo.clone_url)) # use system's git 
 
+    def cloneRepo(self, owner, repo): 
+        repo = self.github.repository(owner, repo)
+        git_helper = git_helpers.GitHelper(repo.clone_url, self.dir_manager, self.credentials)
+        return git_helper.dir_path
 
+    def spell_check_readme(self, owner, repo):
+        repo_dir_path = self.cloneRepo(owner, repo)
+        if spell_checker.has_error(repo_dir_path + "/README.md"):
+            print(repo_dir_path + " has spelling mistakes")
 
-# search and clone 10 repos of a specified GitHub user into the directory from 
+# TODO: let it take in a username, password, and owner, repo name
+#       and create a pull request for that repo based on spell check
 # where this program is run
 if __name__ == '__main__':
-    AnalysisBot().cloneReposFrom(sys.argv[1], 1)
+    AnalysisBot(sys.argv[1], sys.argv[2]).spell_check_readme(sys.argv[3], sys.argv[4])
 
 
 

@@ -8,8 +8,8 @@ def has_error(filename):
         checker = SpellChecker("en_US")
         checker.set_text(data)
         for err in checker:
-            return true
-        return false
+            return True
+        return False
 
 def suggest_correction(filename):
     with open(filename, "r") as file_to_check:
