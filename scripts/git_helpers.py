@@ -58,4 +58,6 @@ class GitHelper(object):
                 if transfer_progress.received_objects:
                     self.up2date = False
 
-
+    def create_and_checkout_branch(self, branch_name):
+        branch = self.repo.create_branch(branch_name, self.repo.head.get_object())
+        self.repo.checkout(self.repo.lookup_reference(branch.name))
