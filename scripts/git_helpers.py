@@ -28,18 +28,20 @@ class GitException(Exception):
 
 
 class GitHelper(object):
-    def __init__(self, repo_url, dir_manager, credentials):
+    def __init__(self, repo_url, dir_manager, credentials, username, email):
         """
         :repo_url: URL of the repository
         :repo_dir: directory where the repository is expected to reside
         """
+        self.signature = pygit2.Signature(username, email)
         self.up2date = False
         self.repo_url = repo_url
         self.dir_path = dir_manager.get_repo_dir(repo_url)
         #print(dir_path)
 
         self.credentials = credentials
-
+        print("@@@@@@@@@@@@@") # TODO remove prints
+        print(repo_url, self.dir_path)
         if not os.path.exists(self.dir_path + '/.git/'):
             try:
                 self.repo = pygit2.clone_repository(repo_url, self.dir_path, credentials=credentials)
@@ -61,3 +63,17 @@ class GitHelper(object):
     def create_and_checkout_branch(self, branch_name):
         branch = self.repo.create_branch(branch_name, self.repo.head.get_object())
         self.repo.checkout(self.repo.lookup_reference(branch.name))
+
+    def commit_all(self, message):
+        index = self.repo.index
+        index.add_all()
+        index.write()
+        tree = index.write_tree()
+        parents = [self.repo.head.get_object().hex]
+        self.repo.create_commit('HEAD', self.signature, self.signature, message, tree, parents)
+
+    def push_current_branch_up(self):
+        # handle exceptions
+        for remote in self.repo.remotes:
+            remote.credentials = lambda x, y, z : self.credentials
+            remote.push([self.repo.head.name])
