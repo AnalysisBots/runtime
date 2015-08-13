@@ -7,19 +7,7 @@ import pygit2
 import git_helpers
 import spell_checker
 
-# TODO refactor
-# This file currently contains the scripts for searching and cloning GitHub 
-# repos.
-# Most of the functionality will probably be moved out into its seperate files
-# at a later point when we have more complete functionalities and are in a 
-# position to structure the code better
-
-# TODO organize all the fetching stuff together
-
-
-# TODO Create a class for AnalysisBot 
-# capture authentication info for AnalysisBot's own account
-# rate-limit will be increased with authentication
+# TODO this file will be removed once its functionalities are moved to proper places
 
 # Rate limit info:
 #             |  Unauthenticated   |  Using Authentication  | Client id & secret
@@ -69,7 +57,7 @@ class AnalysisBot:
             fork_repo_helper.push_current_branch_up()
             self.create_pull(owner, repo_name, "patch-spell-check", "master", "fix spelling mistakes", "fixed spelling mistakes")
 
-# TODO: let it take in a username, password, and owner, repo name
+# TODO: let it take in a username, password, email and owner, repo name
 #       and create a pull request for that repo based on spell check
 if __name__ == '__main__':
     AnalysisBot(sys.argv[1], sys.argv[2], sys.argv[3]).spell_check_readme(sys.argv[4], sys.argv[5])
