@@ -3,6 +3,9 @@
 repo is of type pygit2.Repository
 """
 
+import os
+
+
 import pygit2
 
 
