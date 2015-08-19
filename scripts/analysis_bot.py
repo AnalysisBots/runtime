@@ -17,19 +17,10 @@ class AnalysisBot(metaclass=ABCMeta):
         """return string - the name of the analysis"""
         return name
 
-
-    # TODO remove this
-    @abstractmethod
-    def should_clone(self, repo): 
-        """return boolean indicating whether cloning the repository 
-        is necessary
-        """
-        pass
-
     @abstractmethod
     def ready_to_analyze(self, repo):
-        """return boolean indicating whether a repo is ready to be 
-        analyzed
+        """return True if a repo is ready to be analyzed
+        or return what needs to be done for it to be ready
 
         TODO maybe change this so that it returns the operations needed
         for it to be ready to analyze

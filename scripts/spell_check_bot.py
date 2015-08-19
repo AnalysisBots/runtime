@@ -53,11 +53,11 @@ class SpellCheckBot(AnalysisBot):
     def __init__(self, account):
         AnalysisBot.__init__(self, account, "SpellCheckerBot")
 
-    def should_clone(self, repo): 
-        return True
-
     def ready_to_analyze(self, repo):
-        return repo.has_local_copy()
+        if repo.has_local_copy():
+            return True
+        else:
+            return ["clone"]
 
     def analyze(self, repo):
         # TODO: be more preventative: 
