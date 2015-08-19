@@ -6,13 +6,14 @@ used as ORM interfacing with the datastore
 import pygit2
 import github3
 
-class Repo:
-    """Wrap the github repo together with the local repo"""
+
+class Project:
+    """Represents a GitHub project"""
 
     def __init__(self, repo_id, local_repo=None, fork_id=None):
         """Create a wrapper from the github repo and local repo
 
-        :param repo_id: int 
+        :param repo_id: int
         :param local_repo: pygit2.Repository
         :param fork_id: int
         """
@@ -31,12 +32,6 @@ class Repo:
         return self.local_repo is not None
 
 
-class Project:
-    """GitHub Project"""
-    # TODO
-    pass
-
-
 class Account:
     """GitHub account information for the bot accounts.
 
@@ -46,7 +41,7 @@ class Account:
 
     def __init__(self, username, password, email):
         """
-        :param username: string 
+        :param username: string
         :param password: string
         :param email: string
         """
@@ -61,7 +56,6 @@ class PullRequest:
     """Captures information of a proposed pull request
     """
     # TODO: will capture more information such as feedback etc.
-
 
     def __init__(self, bot, repo, head_branch, title, body):
         self.bot = bot

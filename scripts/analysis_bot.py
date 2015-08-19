@@ -5,9 +5,9 @@ class AnalysisBot(metaclass=ABCMeta):
     """Base class for different kinds of Analysis Bots
     """
 
-    # TODO: probably want factory method to instantiate the 
-    #       different bots to load bots dynamically and 
-    #       avoid multiple instances of the same bot 
+    # TODO: probably want factory method to instantiate the
+    #       different bots to load bots dynamically and
+    #       avoid multiple instances of the same bot
 
     def __init__(self, account, name):
         self.account = account
@@ -15,10 +15,10 @@ class AnalysisBot(metaclass=ABCMeta):
 
     def get_name(self):
         """return string - the name of the analysis"""
-        return name
+        return self.name
 
     @abstractmethod
-    def ready_to_analyze(self, repo):
+    def ready_to_analyze(self, project):
         """return True if a repo is ready to be analyzed
         or return what needs to be done for it to be ready
 
@@ -28,8 +28,8 @@ class AnalysisBot(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def analyze(self, repo): 
-        """analyze the repo and puts necessary information into 
+    def analyze(self, project):
+        """analyze the repo and puts necessary information into
         the datastore for further operations to be carried out
 
         assumes self.ready_to_analyze(repo)
@@ -37,7 +37,7 @@ class AnalysisBot(metaclass=ABCMeta):
         know to create pull request or comment or whatever
 
         how to store the information, the format, and how the runtime
-        will handle the different possible formats used by different 
+        will handle the different possible formats used by different
         bots are yet to be determined
         """
         pass
