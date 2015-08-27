@@ -7,7 +7,8 @@ class StylistBot(AnalysisBot):
     """Check for bad coding style against style guides
 
     Current goal: check modified .py files in a pull request against
-    PEP8 and prepare to leave comment in the pull request
+    PEP8 and prepare to leave a general comment in the pull request
+    regarding whether the updated files passes the PEP8 check
 
     TODOs:
     need to investigate GitHub web-hooks
@@ -17,8 +18,15 @@ class StylistBot(AnalysisBot):
     to be in the control flow and the interface will need to change)
     """
 
+    def __init__(self, account):
+        AnalysisBot.__init__(self, account, "StylistBot")
+
     def ready_to_analyze(self, project):
+        # TODO probably makes sense to have the runtime pass in information
+        # about the pull request to work on
         pass
 
     def analyze(self, project):
+        # TODO probably makes sense to have the runtime pass in information
+        # about the pull request to work on
         pass
